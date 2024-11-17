@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title> Gamedev Canvas Workshop</title>
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+            }
+            canvas {
+                background: #eee;
+                display: block;
+                margin: 0 auto;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="myCanvas" width="480" height="320"></canvas>
+
+
+        <script>
+            //JavsCript
+            //github pages to publish, """".github.io in repo
+            const canvas = document.getElementById("myCanvas")
+            const ctx = canvas.getContext("2d");
+
+            //how to make a shape  ctx.arc(240,160,20,0,Math.PI,false);, stroke ctx.strokeStyle = "rgb(0 0 255 / 50%)";
+            //ctx.beginPath();
+            //ctx.rect(20,40,50,50); //20 pixels from left, 40 from top
+            //ctx.fillStyle = "#FF0000";
+            //ctx.fill();
+            //ctx.closePath();
+            let x = canvas.width /2;
+            let y = canvas.height - 30;
+
+            let dx = 1; //right
+            let dy = -7; //up
+            
+            let ddx = 0; //try putting 0.098 for rightward gravity, very cool
+            let ddy = 0.098;
+
+            const ballRadius = 10;
+
+            function drawBall(){
+                ctx.beginPath();
+                ctx.arc(x,y,ballRadius,0,Math.PI*2);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            function draw() {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                drawBall();
+
+                //handle ball collision with canvas boundaries
+                if (y + dy < ballRadius){//if in the next frame, y will be less than 0 +ballradius //top
+                    dy = -dy;
+                    y = ballRadius; //0 + ballradius
+                }
+                if (y + dy > canvas.height - ballRadius){ //bottom
+                    dy = -dy;
+                    y = canvas.height -ballRadius;
+                }
+                if(x + dx < ballRadius){ // left
+                    dx = -dx;
+                    x = ballRadius;
+                }
+                if (x + dx > canvas.width - ballRadius){ //right
+                    dx = -dx;
+                    x = canvas.width-ballRadius;
+                }
+
+                dx += ddx;
+                dy += ddy;
+                x += dx;
+                y += dy;
+            }
+
+            setInterval(draw,10)
+
+        </script>
+    </body>
+</html>
